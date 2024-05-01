@@ -3,24 +3,26 @@ package org.example.multitenanttest.tenant;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.example.multitenanttest.data.constant.MultiTenantConstants;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.AsyncHandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import static org.example.multitenanttest.data.constant.MultiTenantConstants.BAD_REQUEST_HTTP_CODE_ERROR;
+import static org.example.multitenanttest.data.constant.MultiTenantConstants.TENANT_NOT_FOUND_ERROR;
+
 @RequiredArgsConstructor
 @Component
 public class TenantRequestInterceptor implements AsyncHandlerInterceptor {
 
-    private final String X_TENANT_ID = "X-TenantID";
-    private final String TENANT_NOT_FOUND_ERROR = "X-TenantID not present in the Request Header";
-    private final int BAD_REQUEST_HTTP_CODE_ERROR = 400;
+
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
         String requestURI = request.getRequestURI();
-        String tenantId = request.getHeader(X_TENANT_ID);
+        String tenantId = request.getHeader(MultiTenantConstants.TENANT_KEY);
 
         System.out.println("RequestURI::" + requestURI + " || Search for X-TenantID  :: " + tenantId);
 
